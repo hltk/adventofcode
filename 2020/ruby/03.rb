@@ -1,9 +1,8 @@
-Grid = ARGF.map &:chomp
-N, M = Grid.length, Grid[0].length
+@grid = ARGF.map &:chomp
 
 def calc(xs,ys)
-  (0...N).step(ys).each_with_index.count{|y,x|
-    Grid[y][(x*xs) % M] == '#'
+  (0...@grid.length).step(ys).with_index.count{|y,x|
+    @grid[y][(x*xs) % @grid[0].length] == '#'
   }
 end
 
