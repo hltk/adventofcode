@@ -1,11 +1,12 @@
 l = ARGF.map{|l|
-  l.match(/(\d+)-(\d+) (.): (\w+)/).captures
+  a,b,c,d = l.scan /\w+/
+  [a.to_i,b.to_i,c,d]
 }
 
 p l.count{|a,b,c,d| 
-  d.count(c).between?(a.to_i, b.to_i)
+  d.count(c).between?(a, b)
 }
 
 p l.count{|a,b,c,d| 
-  (d[a.to_i-1] + d[b.to_i-1]).count(c) == 1
+  (d[a-1] == c) != (d[b-1] == c)
 }
