@@ -6,9 +6,6 @@ w = {}
 
 def D(x): return 'xxx' + x
 
-def exec(a, b, c):
-    print(a)
-
 for l in data.split("\n"):
     tokens = l.split()
     if "AND" in tokens: exec(f"{D(tokens[4])} = {D(tokens[0])} & {D(tokens[2])}", {}, w)
