@@ -3,7 +3,7 @@ seats = ARGF.map{|line|
 }
 
 p seats.max
-p (seats.min..seats.max).filter{|i| seats.include?(i-1) &&
-                                   !seats.include?(i) &&
-                                    seats.include?(i+1)
-}.first
+p (seats.min..seats.max).find{|i| seats.include?(i-1) &&
+                                 !seats.include?(i) &&
+                                  seats.include?(i+1)
+}
