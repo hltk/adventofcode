@@ -189,7 +189,7 @@ end
 require 'httparty'
 require 'fileutils'
 
-TOKEN=ENV['AOC']
+TOKEN=File.read('./token').strip
 
 def read day=nil, year = nil
   day = Time.new.day unless day
