@@ -1,4 +1,5 @@
-@grid = ARGF.map &:chomp
+require './utils.rb'
+@grid = read(3).split
 
 def calc(xs,ys)
   (0...@grid.length).step(ys).with_index.count{|y,x|
