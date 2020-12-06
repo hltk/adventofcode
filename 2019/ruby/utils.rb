@@ -200,7 +200,10 @@ def read day=nil, year = nil
   return File.read(fp) if File.file?(fp)
   url = "https://adventofcode.com/#{year}/day/#{day}/input"
   resp = HTTParty.get(url, { headers: { "Cookie" => "session=#{TOKEN}" } })
-  puts("error: #{resp.code}") == nil && exit if resp.code != 200
+  if resp.code != 200
+    puts("error code: #{resp.code}\nbody: #{resp.body}") == nil
+    exit
+  end
   File.write(fp, resp.body)
   return resp.body
 end
