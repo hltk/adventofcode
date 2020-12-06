@@ -1,8 +1,4 @@
 require './utils.rb'
-l = read(2).lines.map{|l|
-  a,b,c,d = l.scan /\w+/
-  [a.to_i,b.to_i,c,d]
-}
-
+l = read(2).lines.map{|l|[*l.ints(false),*l.scan(/[a-z]+/)]}
 p l.count{|a,b,c,d|d.count(c).between?(a, b)}
 p l.count{|a,b,c,d|(d[a-1] != c) != (d[b-1] != c)}
