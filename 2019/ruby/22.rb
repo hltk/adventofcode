@@ -34,7 +34,7 @@ times = 101741582076661
 
 a, b = ModInt.new(1), ModInt.new(0)
 
-ARGF.to_a.reverse_each{|x|
+ARGF.reverse_each{|x|
   if x =~ /stack/
     a = -a
     b = -b
