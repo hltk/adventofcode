@@ -1,5 +1,4 @@
-l = ARGF.map &:to_i
+require './utils.rb'
 
-(2..3).each{|n|
-  p l.combination(n).find{|s| s.sum == 2020}.inject :*
-}
+p read(1).ints.combination(2).find{|s|s.sum==2020}.inject(:*)
+p read(1).ints.combination(3).find{|s|s.sum==2020}.inject(:*)
