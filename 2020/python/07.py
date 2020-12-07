@@ -9,8 +9,8 @@ rg = defaultdict(list)
 g = defaultdict(list)
 
 for line in data.split("\n"):
-    a = re.match(r"^(.*) bags contain", line)[1]
-    for cnt, b in re.findall(r"(\d+) ([a-z ]+) bags?", line):
+    a = re.match(r"(.+?) bags contain", line)[1]
+    for cnt, b in re.findall(r"(\d+) (.+?) bags?", line):
         rg[b].append(a)
         g[a].append((b, int(cnt)))
 
