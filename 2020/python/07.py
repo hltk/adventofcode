@@ -1,6 +1,9 @@
+import operator
 import re
-from aocd import data
 from collections import defaultdict
+from functools import reduce
+
+from aocd import data
 
 rg = defaultdict(list)
 g = defaultdict(list)
@@ -11,24 +14,8 @@ for line in data.split("\n"):
         rg[b].append(a)
         g[a].append((b, int(cnt)))
 
-def p1():
-    def dfs(node):
-        seen = {node}
-        for u in rg[node]:
-            seen |= dfs(u)
-        return seen
+p1 = lambda node: reduce(operator.or_, map(p1, rg[node]), {node})
+print(len(p1('shiny gold')) - 1)
 
-    return len(dfs('shiny gold')) - 1
-
-print(p1())
-
-def p2():
-    def dfs(node):
-        tot = 1
-        for u, cnt in g[node]:
-            tot += dfs(u) * cnt
-        return tot
-
-    return dfs('shiny gold') - 1
-
-print(p2())
+p2 = lambda node: 1 + sum(p2(u) * cnt for u, cnt in g[node])
+print(p2('shiny gold') - 1)
