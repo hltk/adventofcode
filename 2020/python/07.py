@@ -14,7 +14,7 @@ for line in data.split("\n"):
         rg[b].append(a)
         g[a].append((b, int(cnt)))
 
-p1 = lambda node: reduce(operator.or_, map(p1, rg[node]), {node})
+p1 = lambda node: set.union({node}, *map(p1, rg[node]))
 print(len(p1('shiny gold')) - 1)
 
 p2 = lambda node: 1 + sum(p2(u) * cnt for u, cnt in g[node])
