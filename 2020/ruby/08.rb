@@ -21,7 +21,12 @@ puts acc
   it = 0
   acc = 0
   seen = Set.new
-  while !seen.include?(it) && 0 <= it && it < l.size
+  loop{
+    if it == l.size
+      puts acc
+      exit
+    end
+    break if seen.include? it
     seen.add it
     a, b = l[it].split
     if i == it && a != 'acc'
@@ -32,6 +37,5 @@ puts acc
     when 'acc' then acc += b.to_i; it += 1;
     when 'nop' then it += 1;
     end
-  end
-  puts acc if !seen.include? it
+  }
 }
