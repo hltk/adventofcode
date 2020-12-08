@@ -213,3 +213,10 @@ class String
 end
 
 require 'set'
+
+
+class Array
+  def dclone
+    map{|x|x.respond_to?(:dclone) ? x.dclone : x.clone}
+  end
+end
