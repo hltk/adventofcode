@@ -211,3 +211,5 @@ end
 class String
   def ints(n=true); (n ? self.scan(/-?\d+/) : self.scan(/\d+/)).map &:to_i end
 end
+
+require 'set'
