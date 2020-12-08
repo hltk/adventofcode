@@ -30,10 +30,10 @@ def f i
       a = a == 'jmp' ? 'nop' : 'jmp'
     end
     case a
-    when 'jmp' then it += b.to_i;
-    when 'acc' then acc += b.to_i; it += 1;
-    when 'nop' then it += 1;
+    when 'jmp' then it += b.to_i - 1
+    when 'acc' then acc += b.to_i
     end
+    it += 1
   end
   puts acc
 end
