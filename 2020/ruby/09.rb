@@ -16,10 +16,9 @@ a[25..].each{|x|
 p p1
 
 (0...a.size).each{|i|
-  (i...a.size).each{|j|
+  ((i+1)...a.size).each{|j|
     if a[i..j].sum == p1
       p a[i..j].min + a[i..j].max
-      exit
     end
   }
 }
