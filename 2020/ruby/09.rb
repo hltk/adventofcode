@@ -3,13 +3,11 @@ require './utils.rb'
 a = read('9').lines.map &:to_i
 
 p1 = nil
-prev = a[0...25]
-a[25..].each{|x|
-  if prev.combination(2).map(&:sum).count(x) == 0
-    p1 = x
+(25...a.size).each{|i|
+  if a[i-25...i].combination(2).map(&:sum).count(a[i]) == 0
+    p1 = a[i]
     break
   end
-  prev = prev[1..] + [x]
 }
 
 p p1
