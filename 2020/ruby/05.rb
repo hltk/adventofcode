@@ -1,5 +1,5 @@
 require './utils.rb'
-seats = read(5).lines.map{|line|line.tr('FLBR', '0011').to_i 2}
+s = read(5).lines.map{|line|line.tr('FLBR', '0011').to_i 2}
 
-p seats.max
-p (seats.min..seats.max).find{|i| seats.include?(i-1) && !seats.include?(i) && seats.include?(i+1)}
+p s.max
+p (s.min..s.max).find{|i| s.include?(i-1) && !s.include?(i) && s.include?(i+1)}
