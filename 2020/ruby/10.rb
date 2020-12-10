@@ -1,8 +1,7 @@
 require './utils.rb'
 
 a = read('10').ints
-a += [a.max + 3] + [0]
-a.sort!
+a = [0] + a.sort + [a.max + 3]
 
 diffs = a.each_cons(2).map{|x,y|y - x}.tally
 p diffs[1] * diffs[3]
