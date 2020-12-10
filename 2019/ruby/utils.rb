@@ -211,3 +211,12 @@ end
 class String
   def ints(n=true); (n ? self.scan(/-?\d+/) : self.scan(/\d+/)).map &:to_i end
 end
+
+require 'set'
+
+
+class Array
+  def dclone
+    map{|x|x.respond_to?(:dclone) ? x.dclone : x.clone}
+  end
+end
