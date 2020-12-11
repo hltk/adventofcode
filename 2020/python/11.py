@@ -4,50 +4,48 @@ from aocd import data
 grid = data.split("\n")
 n, m = len(grid), len(grid[0])
 
-def find_first(i, j, vi, vj):
+def find_first(i, j, vi, vj, p1):
     i += vi
     j += vj
-    while valid_coords(i, j) and grid[i][j] == '.':
+    while i in range(n) and j in range(m):
+        if grid[i][j] != '.':
+            yield (i, j)
+            break
+        if p1:
+            break
         i += vi
         j += vj
-    if valid_coords(i, j) and grid[i][j] != '.':
-        return (i, j)
-    return None
 
 
-def neighbours(i, j):
-    yield find_first(i, j, -1, 0)
-    yield find_first(i, j, +1, 0)
-    yield find_first(i, j, 0, -1)
-    yield find_first(i, j, 0, +1)
-    yield find_first(i, j, +1, +1)
-    yield find_first(i, j, -1, +1)
-    yield find_first(i, j, +1, -1)
-    yield find_first(i, j, -1, -1)
+def neighbours(i, j, p1):
+    yield from find_first(i, j, -1, 0, p1)
+    yield from find_first(i, j, +1, 0, p1)
+    yield from find_first(i, j, 0, -1, p1)
+    yield from find_first(i, j, 0, +1, p1)
+    yield from find_first(i, j, +1, +1, p1)
+    yield from find_first(i, j, -1, +1, p1)
+    yield from find_first(i, j, +1, -1, p1)
+    yield from find_first(i, j, -1, -1, p1)
 
-def valid_coords(i, j):
-    return 0 <= i < n and 0 <= j < m
-
-seats = set()
-for i in range(n):
-    for j in range(m):
-        if grid[i][j] == '#':
-            seats.add((i, j))
-
-while True:
+def step(seats, p1):
     new_seats = set()
     for i in range(n):
         for j in range(m):
             if grid[i][j] != '.':
-                ncnt = 0
-                for ni, nj in starfilter(valid_coords, filter(None, neighbours(i, j))):
-                        if (ni, nj) in seats:
-                            ncnt += 1
+                ncnt = sum((ni, nj) in seats for ni, nj in neighbours(i, j, p1))
                 if (i, j) not in seats and ncnt == 0:
                     new_seats.add((i, j))
-                if (i, j) in seats and ncnt < 5:
+                if (i, j) in seats and ncnt < (4 if p1 else 5):
                     new_seats.add((i, j))
-    if new_seats == seats:
-        break
-    seats = new_seats
-    print(len(seats))
+    return new_seats
+
+def simulate(p1):
+    seats = {(i, j) for i, j in product(range(n), range(m)) if grid[i][j] == '#'}
+
+    while (nxt := step(seats, p1)) != seats:
+        seats = nxt
+    return len(seats)
+
+print(simulate(True))
+
+print(simulate(False))
