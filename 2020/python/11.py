@@ -1,4 +1,4 @@
-from itertools import product
+from itertools import product, count, takewhile
 from aocd import data
 
 
@@ -19,17 +19,15 @@ def step(cells, neigh, p1):
     return {(i, j) for i, j in product(range(n), range(m)) if alive(i, j)}
 
 
-def find_first(i, j, vi, vj, p1):
-    i += vi
-    j += vj
-    while i in range(n) and j in range(m):
+def find_first(oi, oj, vi, vj, p1):
+    def valid(p):
+        return p[0] in range(n) and p[1] in range(m)
+    for i, j in takewhile(valid, zip(count(oi + vi, vi), count(oj + vj, vj))):
         if grid[i][j] != '.':
             yield i, j
             break
         if p1:
             break
-        i += vi
-        j += vj
 
 
 adj = set(product([-1, 0, 1], [-1, 0, 1])) - {(0, 0)}
