@@ -126,6 +126,7 @@ def valid_coords(i, j, n, m):
 def adjacent_difference(it, f=operator.sub):
     return starmap(lambda x, y: f(y, x), pairwise(it))
 
+
 # Stolen from ecnerwala
 def cprint(ans):
     print(ans)
