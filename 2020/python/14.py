@@ -1,4 +1,5 @@
-from utils import *
+from itertools import repeat
+from more_itertools import powerset
 
 def tr(s, a, b):
     return s.translate(str.maketrans(a, b))
