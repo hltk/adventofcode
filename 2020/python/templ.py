@@ -7,9 +7,8 @@ from builtins import pow
 import operator
 import re
 
-def ints(line, non_neg=False):
-    reg = r"\d+" if non_neg else r"-?\d+"
-    return [int(x) for x in re.findall(reg, line)]
+def ints(line):
+    return [int(r[0]) for r in findall("{:d}", line)]
 
 # Taken from ecnerwala
 def cprint(ans):
