@@ -1,9 +1,9 @@
-from utils import *
-
 def main(inp):
-    print(inp)
+    inp = inp.strip()
+    inp = inp.split('\n')
 
-sample = r""""""
+sample = r"""
+"""
 print('sample:')
 main(sample)
 
