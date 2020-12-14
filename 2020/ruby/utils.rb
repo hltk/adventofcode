@@ -219,4 +219,10 @@ class Array
   def dclone
     map{|x|x.respond_to?(:dclone) ? x.dclone : x.clone}
   end
+
+  def powerset
+    (0..length).collect { |i|
+      self.combination(i).to_a
+    }.flatten(1)
+  end
 end
