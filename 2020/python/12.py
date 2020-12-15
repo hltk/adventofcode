@@ -1,10 +1,11 @@
 from aocd import data
+from parse import parse
 
 p = 0 + 0j
 w = 10 + 1j
 
 for v in data.split():
-    a, x = v[:1], int(v[1:])
+    a, x = parse("{:l}{:d}", v)
 
     if a == "N": w += x * 1j
     if a == "S": w -= x * 1j
