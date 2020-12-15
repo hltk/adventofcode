@@ -17,3 +17,6 @@ clean:
 
 format:
 	clang-format -i $(srcfiles)
+
+run:
+	./main 2> /dev/null
