@@ -11,28 +11,32 @@ ret_t solve15(input_t input) {
 	last_index.fill(-1);
 
 	std::uint32_t index = 0;
-	std::uint32_t cur = 0, prev = -1;
+	std::uint32_t current = 0, previous = -1;
+
 	for (const auto c : input) {
-		if ('0' <= c && c <= '9') {
-			cur = cur * 10 + (c - '0');
-		} else {
-			if (prev != -1) {
-				last_index[prev] = index++;
-			}
-			prev = cur;
-			cur = 0;
+		if ('0' <= c && c <= '9')
+			current = current * 10 + (c - '0');
+		else {
+			if (previous != -1)
+				last_index[previous] = index++;
+			previous = current;
+			current = 0;
 		}
 	}
-	for (; index < P1_INDEX; ++index) {
-		cur = last_index[prev] != -1 ? index - last_index[prev] : 0;
-		last_index[prev] = index;
-		prev = cur;
-	}
-	std::uint32_t p1_ans = prev;
-	for (; index < P2_INDEX; ++index) {
-		cur = last_index[prev] != -1 ? index - last_index[prev] : 0;
-		last_index[prev] = index;
-		prev = cur;
-	}
-	return {std::to_string(p1_ans), std::to_string(prev)};
+
+	auto calculate = [&index, &previous ](const auto end) -> auto {
+		for (; index < end; ++index) {
+			std::uint32_t current = 0;
+			if (last_index[previous] != -1)
+				current = index - last_index[previous];
+			last_index[previous] = index;
+			previous = current;
+		}
+		return previous;
+	};
+
+	auto p1_answer = calculate(P1_INDEX);
+	auto p2_answer = calculate(P2_INDEX);
+
+	return {std::to_string(p1_answer), std::to_string(p2_answer)};
 }
