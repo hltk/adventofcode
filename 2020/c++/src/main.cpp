@@ -10,9 +10,29 @@
 
 static input_t read_input(std::string);
 
-std::vector<std::function<ret_t(input_t)>> days{solve01, solve02, solve03};
+// clang-format off
+std::vector<std::function<ret_t(input_t)>> days{
+	solve01,
+	solve02,
+	solve03,
+	solve04,
+	solve05,
+	solve06,
+	solve07,
+	solve08,
+	solve09,
+	solve10,
+	solve11,
+	solve12,
+	solve13,
+	solve14,
+	solve15,
+};
+// clang-format on
 
 int main() {
+	using namespace std::chrono_literals;
+	auto sum = (0ms).count();
 	for (std::size_t i = 0; i < days.size(); ++i) {
 		std::stringstream filename;
 		filename << "input/";
@@ -29,13 +49,17 @@ int main() {
 		    std::chrono::duration_cast<std::chrono::microseconds>(
 			end - begin);
 
-		std::cout << "Day " << i + 1 << ": ";
-		std::cout << elapsed.count() << "µs" << '\t';
+		sum += elapsed.count();
+
+		std::cout << "Day ";
+		std::cout << std::setw(2) << i + 1 << ": ";
+		std::cout << std::setw(8) << elapsed.count() << "µs" << '\t';
 		std::cout << std::setw(16) << std::setfill(' ');
 		std::cout << p1 << ' ';
 		std::cout << std::setw(16) << std::setfill(' ');
 		std::cout << p2 << std::endl;
 	}
+	std::cout << "\nSum:    " << std::setw(8) << sum << "µs\n";
 }
 
 static input_t read_input(const std::string fname) {

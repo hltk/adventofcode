@@ -1,7 +1,7 @@
 appname := main
 
 CXX=clang++
-CXXFLAGS=-std=c++17 -march=native -O3 -Wall -Werror
+CXXFLAGS=-std=c++17 -march=native -mtune=native -O3 -Wall -Werror
 
 srcfiles := $(shell find -name "*.cpp")
 
