@@ -1,21 +1,19 @@
 from itertools import repeat
 from more_itertools import powerset
+from parse import parse
 
 def tr(s, a, b):
     return s.translate(str.maketrans(a, b))
 
 def main(inp):
     inp = inp.strip()
-    inp = inp.split("\n")
     mem = {}
-    for l in inp:
-        l = tr(l, "[=]", "   ")
+    for l in inp.split("\n"):
         tokens = l.split()
-        if len(tokens) == 2:
-            mask = tokens[-1]
+        if p := parse("mask = {}", l):
+            mask = p[0]
         else:
-            value = int(tokens[-1])
-            add = int(tokens[1])
+            add, value = parse("mem[{:d}] = {:d}", l)
             add |= int(tr(mask, "X", "0"), 2)
             add &= ~int(tr(mask, "1X", "01"), 2)
             xs = [35 - i for i, x in enumerate(mask) if x == "X"]
