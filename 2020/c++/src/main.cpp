@@ -31,6 +31,8 @@ std::vector<std::function<ret_t(input_t)>> days{
 // clang-format on
 
 int main() {
+	std::ios::sync_with_stdio(false);
+
 	using namespace std::chrono_literals;
 	auto sum = (0ms).count();
 	for (std::size_t i = 0; i < days.size(); ++i) {
@@ -42,24 +44,29 @@ int main() {
 		auto inp = read_input(filename.str());
 
 		auto begin = std::chrono::steady_clock::now();
-		auto [p1, p2] = days[i](inp);
+		int t = 10;
+		while (t--) {
+			auto [p1, p2] = days[i](inp);
+			std::cerr << p1 << p2 << '\n';
+		}
 		auto end = std::chrono::steady_clock::now();
 
+		auto difference = end - begin;
 		auto elapsed =
 		    std::chrono::duration_cast<std::chrono::microseconds>(
-			end - begin);
+			difference);
 
 		sum += elapsed.count();
 
 		std::cout << "Day ";
 		std::cout << std::setw(2) << i + 1 << ": ";
-		std::cout << std::setw(8) << elapsed.count() << "µs" << '\t';
-		std::cout << std::setw(16) << std::setfill(' ');
-		std::cout << p1 << ' ';
-		std::cout << std::setw(16) << std::setfill(' ');
-		std::cout << p2 << std::endl;
+		std::cout << std::setw(8) << double(elapsed.count()) / 10;
+		std::cout << "µs" << std::endl;
 	}
-	std::cout << "\nSum:    " << std::setw(8) << sum << "µs\n";
+	std::cout << std::endl;
+	std::cout << "Sum:    ";
+	std::cout << std::setw(8) << double(sum) / 10;
+	std::cout << "µs" << std::endl;
 }
 
 static input_t read_input(const std::string fname) {

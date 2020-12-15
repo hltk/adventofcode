@@ -2,38 +2,37 @@
 
 #include <array>
 
-constexpr std::uint32_t P1_TARGET = 2020 - 1;
-constexpr std::uint32_t P2_TARGET = 30000000 - 1;
+static constexpr std::uint32_t P1_INDEX = 2020 - 1;
+static constexpr std::uint32_t P2_INDEX = 30000000 - 1;
 
-std::array<std::uint32_t, P2_TARGET> h;
+static std::array<std::uint32_t, P2_INDEX> last_time;
 
-ret_t solve15(input_t inp) {
-	h.fill(-1);
+ret_t solve15(input_t input) {
+	last_time.fill(-1);
 
-	std::uint32_t t = 0;
-	std::uint32_t num{}, lnum = -1;
-	for (const auto c : inp) {
+	std::uint32_t time = 0;
+	std::uint32_t cur = 0, prev = -1;
+	for (const auto c : input) {
 		if ('0' <= c && c <= '9') {
-			num = num * 10 + (c - '0');
+			cur = cur * 10 + (c - '0');
 		} else {
-			if (lnum != -1) {
-				h[lnum] = t++;
+			if (prev != -1) {
+				last_time[prev] = time++;
 			}
-			lnum = num;
-			num = 0;
+			prev = cur;
+			cur = 0;
 		}
 	}
-	std::uint32_t p1_ans;
-	for (; t < P1_TARGET; ++t) {
-		num = h[lnum] != -1 ? t - h[lnum] : 0;
-		h[lnum] = t;
-		lnum = num;
+	for (; time < P1_INDEX; ++time) {
+		cur = last_time[prev] != -1 ? time - last_time[prev] : 0;
+		last_time[prev] = time;
+		prev = cur;
 	}
-	p1_ans = lnum;
-	for (; t < P2_TARGET; ++t) {
-		num = h[lnum] != -1 ? t - h[lnum] : 0;
-		h[lnum] = t;
-		lnum = num;
+	std::uint32_t p1_ans = prev;
+	for (; time < P2_INDEX; ++time) {
+		cur = last_time[prev] != -1 ? time - last_time[prev] : 0;
+		last_time[prev] = time;
+		prev = cur;
 	}
-	return {std::to_string(p1_ans), std::to_string(lnum)};
+	return {std::to_string(p1_ans), std::to_string(prev)};
 }
