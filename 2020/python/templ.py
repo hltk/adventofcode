@@ -1,10 +1,10 @@
-from functools import *
-from itertools import *
-from more_itertools import *
-from parse import *
-from math import *
 from builtins import pow
 from collections import *
+from functools import *
+from itertools import *
+from math import *
+from more_itertools import *
+from parse import *
 import operator
 import re
 
