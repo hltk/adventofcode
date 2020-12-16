@@ -3,10 +3,12 @@ from functools import *
 from itertools import *
 from math import *
 from builtins import pow # has to come after math
-from more_itertools import *
-from parse import *
 import operator
 import re
+
+from more_itertools import *
+from parse import *
+import networkx as x
 
 def ints(line):
     return [int(r[0]) for r in findall("{:d}", line)]
