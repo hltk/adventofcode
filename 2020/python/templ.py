@@ -9,6 +9,7 @@ import re
 from more_itertools import *
 from parse import *
 import networkx as x
+import pyperclip
 
 def ints(line):
     return [int(r[0]) for r in findall("{:d}", line)]
@@ -16,7 +17,6 @@ def ints(line):
 # Taken from ecnerwala
 def cprint(ans):
     print(ans)
-    import pyperclip
     pyperclip.copy(ans)
 
 def main(inp):
