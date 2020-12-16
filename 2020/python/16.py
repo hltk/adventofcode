@@ -14,24 +14,24 @@ def ints(line):
     return [int(r[0]) for r in findall("{:d}", line)]
 
 def main(inp):
-    inp = inp.strip()
-
     Requirement = namedtuple('Requirement', ['values', 'name'])
 
+    requirements, my_ticket, tickets = inp.split("\n\n")
+    requirements = requirements.split("\n")
+    my_ticket = ints(my_ticket)
+
     fields = []
-    for requirement in inp.split("your ticket:")[0].strip().split("\n"):
+    for requirement in requirements:
         ok = set()
         for l, r in ichunked(ints(requirement.replace("-", " ")), 2):
             ok |= set(range(l, r + 1))
         fields.append(Requirement(ok, requirement.split(":")[0]))
     all_values = set.union(*(x.values for x in fields))
 
-    my_ticket, tickets = inp.split("your ticket:")[1].split("nearby tickets:")
-    my_ticket = ints(my_ticket)
+    print(sum(filterfalse(all_values.__contains__, ints(tickets))))
 
-    print(sum(filter(lambda x: x not in all_values, ints(tickets))))
+    tickets = tickets.split("\n")[1:]
 
-    tickets = tickets.strip().split("\n")
     def good(v):
         return all(map(all_values.__contains__, v))
     tickets = filter(good, map(ints, tickets))
