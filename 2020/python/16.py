@@ -18,10 +18,10 @@ def main(inp):
 
     fields = []
     for requirement in requirements:
-        ok = set()
+        values = set()
         for l, r in ichunked(ints(requirement.replace("-", " ")), 2):
-            ok |= set(range(l, r + 1))
-        fields.append(Requirement(ok, requirement))
+            values |= set(range(l, r + 1))
+        fields.append(Requirement(values, requirement))
     all_values = set.union(*(x.values for x in fields))
 
     print(sum(filterfalse(all_values.__contains__, ints(tickets))))
@@ -39,13 +39,12 @@ def main(inp):
         for j, y in enumerate(fields):
             if x.issubset(y.values):
                 G.add_edge(i, j + len(fields))
-    match = nx.algorithms.bipartite.matching.maximum_matching(G)
-    match = [(a, b - len(fields)) for a, b in match.items() if a < b]
+    matching = nx.algorithms.bipartite.matching.maximum_matching(G)
+    pairs = [(a, b - len(fields)) for a, b in matching.items() if a < b]
 
     def in_ans(i):
         return fields[i].line.startswith("departure")
-    r = reduce(operator.mul, (my_ticket[a] for a, b in match if in_ans(b)))
-    print(r)
+    print(reduce(operator.mul, (my_ticket[a] for a, b in pairs if in_ans(b))))
 
 from aocd import data
 main(data)
