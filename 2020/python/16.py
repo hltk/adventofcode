@@ -32,10 +32,10 @@ def main(inp):
         return all(map(all_values.__contains__, v))
     tickets = filter(good, map(ints, tickets))
 
-    possible = [set(v) for v in zip(*tickets, my_ticket)]
+    field_values = [set(v) for v in zip(*tickets, my_ticket)]
 
     G = nx.Graph()
-    for i, x in enumerate(possible):
+    for i, x in enumerate(field_values):
         for j, y in enumerate(fields):
             if x.issubset(y.values):
                 G.add_edge(i, j + len(fields))
