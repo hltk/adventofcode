@@ -1,14 +1,10 @@
-from builtins import pow
 from collections import *
-from copy import deepcopy
 from functools import *
 from itertools import *
-from math import *
 from more_itertools import *
 from parse import *
 import networkx as nx
 import operator
-import re
 
 def ints(line):
     return [int(r[0]) for r in findall("{:d}", line)]
