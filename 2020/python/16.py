@@ -7,7 +7,7 @@ import networkx as nx
 import operator
 
 def ints(line):
-    return [int(r[0]) for r in findall("{:d}", line)]
+    return [r[0] for r in findall("{:d}", line)]
 
 def main(inp):
     Requirement = namedtuple('Requirement', ['values', 'line'])
