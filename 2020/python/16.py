@@ -1,50 +1,39 @@
-from collections import *
 from functools import *
 from itertools import *
 from more_itertools import *
-from parse import *
 import networkx as nx
 import operator
+import re
 
-def ints(line):
-    return [r[0] for r in findall("{:d}", line)]
+def ints(s):
+    return [int(k) for k in re.findall("\d+", s)]
 
 def main(inp):
-    Requirement = namedtuple('Requirement', ['values', 'line'])
-
-    requirements, my_ticket, tickets = inp.split("\n\n")
-    requirements = requirements.split("\n")
-    my_ticket = ints(my_ticket)
-
     fields = []
-    for requirement in requirements:
-        values = set()
-        for l, r in ichunked(ints(requirement.replace("-", " ")), 2):
-            values |= set(range(l, r + 1))
-        fields.append(Requirement(values, requirement))
-    all_values = set.union(*(x.values for x in fields))
+    tickets = []
+    for l in inp.split("\n"):
+        if k := ints(l):
+            if len(k) == 4:
+                l0, r0, l1, r1 = k
+                fields.append([l, set(range(l0, r0 + 1)) | set(range(l1, r1 + 1))])
+            else:
+                tickets.append(k)
 
-    print(sum(filterfalse(all_values.__contains__, ints(tickets))))
+    all_values = set.union(*(x[1] for x in fields))
+    print(sum(filterfalse(all_values.__contains__, flatten(tickets))))
 
-    tickets = tickets.split("\n")[1:]
-
-    def good(v):
-        return all(map(all_values.__contains__, v))
-    tickets = filter(good, map(ints, tickets))
-
-    field_values = [set(v) for v in zip(*tickets, my_ticket)]
+    tickets = [v for v in tickets if all(map(all_values.__contains__, v))]
+    field_values = [set(v) for v in zip(*tickets)]
 
     G = nx.Graph()
     for i, x in enumerate(field_values):
-        for j, y in enumerate(fields):
-            if x.issubset(y.values):
-                G.add_edge(i, j + len(fields))
+        G.add_edges_from((i, j + len(fields)) for j, y in enumerate(fields) if x <= y[1])
     matching = nx.algorithms.bipartite.matching.maximum_matching(G)
     pairs = [(a, b - len(fields)) for a, b in matching.items() if a < b]
 
     def in_ans(i):
-        return fields[i].line.startswith("departure")
-    print(reduce(operator.mul, (my_ticket[a] for a, b in pairs if in_ans(b))))
+        return fields[i][0].startswith("departure")
+    print(reduce(operator.mul, (tickets[0][a] for a, b in pairs if in_ans(b))))
 
 from aocd import data
 main(data)
