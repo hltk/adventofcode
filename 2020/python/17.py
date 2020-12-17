@@ -1,32 +1,27 @@
-def neighbours(x, y, z, w):
-    for xi in range(-1, 2):
-        for yi in range(-1, 2):
-            for zi in range(-1, 2):
-                for wi in range(-1, 2):
-                    if xi != 0 or yi != 0 or zi != 0 or wi != 0:
-                        yield (x + xi, y + yi, z + zi, w + wi)
+from functools import partial
+from itertools import product, chain
+import operator
+
+def zip_func(vec1, vec2, func):
+    return tuple(func(a, b) for a, b in zip(vec1, vec2))
+
+zip_add = partial(zip_func, func=operator.add)
+
+def neighbours(p):
+    for dp in set(product(range(-1, 2), repeat=4)) - {(0, 0, 0, 0)}:
+        yield zip_add(p, dp)
 
 def main(inp):
-    inp = inp.strip()
     inp = inp.split('\n')
     n, m = len(inp), len(inp[0])
-    act = set()
-    for i in range(n):
-        for j in range(m):
-            if inp[i][j] == '#':
-                act.add((i, j, 0, 0))
+    act = {(i, j, 0, 0) for i, j in product(range(n), range(m)) if inp[i][j] == '#'}
     for t in range(6):
         nact = set()
-        to_test = act.copy()
-        for x, y, z, w in act:
-            for nx, ny, nz, nw in neighbours(x, y, z, w):
-                to_test.add((nx, ny, nz, nw))
-        for x, y, z, w in to_test:
-            cnt = sum(map(act.__contains__, neighbours(x, y, z, w)))
-            if (x, y, z, w) in act and 2 <= cnt <= 3:
-                nact.add((x, y, z, w))
-            if (x, y, z, w) not in act and cnt == 3:
-                nact.add((x, y, z, w))
+        to_test = set(chain.from_iterable(neighbours(p) for p in act)) | act
+        for p in to_test:
+            cnt = sum(map(act.__contains__, neighbours(p)))
+            if cnt == 3 or (p in act and cnt == 2):
+                nact.add(p)
         act = nact
     print(len(act))
 
