@@ -8,7 +8,7 @@ import re
 
 from more_itertools import *
 from parse import *
-import networkx as x
+import networkx as nx
 import pyperclip
 
 def ints(line):
