@@ -4,20 +4,13 @@ def calc(s):
         bal = 1
         j = i + 1
         while s[j] != ")" or bal != 1:
-            if s[j] == ")":
-                bal -= 1
-            if s[j] == "(":
-                bal += 1
+            bal += {"(": 1, ")": -1}.get(s[j], 0)
             j += 1
-        s = list(s)
-        s[i:j+1] = str(calc(''.join(s[i+1:j])))
-        s = ''.join(s)
+        s = s[:i] + str(calc(s[i+1:j])) + s[j+1:]
     s = s.split()
     while "+" in s:
         i = s.index("+")
-        a = s[i - 1]
-        b = s[i + 1]
-        s[i-1:i+2] = [str(int(a) + int(b))]
+        s[i-1:i+2] = [f"{int(s[i - 1]) + int(s[i + 1])}"]
     return eval(' '.join(s))
 
 def main(inp):
