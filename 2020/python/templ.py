@@ -5,9 +5,10 @@ from math import *
 from builtins import pow # has to come after math
 import operator
 import re
+from pprint import pprint
 
 from more_itertools import *
-from parse import *
+from parse import * # search, parse, findall
 import networkx as nx
 import pyperclip
 
@@ -22,6 +23,7 @@ def cprint(ans):
 def main(inp):
     inp = inp.strip()
     inp = inp.split('\n')
+    pprint(inp)
 
 sample = r"""
 """
