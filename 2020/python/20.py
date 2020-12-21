@@ -44,11 +44,11 @@ def main(inp):
     def unique(side):
         return min(side, side[::-1])
 
-    all_sides = collections.defaultdict(set)
+    edges = collections.defaultdict(set)
     for t in tiles:
         for side in t.sides:
             side = unique(side)
-            all_sides[side].add(t.index)
+            edges[side].add(t.index)
 
     side = round(math.sqrt(len(tiles)))
     grid = [[None] * side for _ in range(side)]
@@ -57,12 +57,14 @@ def main(inp):
         for tile in filter(lambda x: x.placed is False, tiles):
             def good():
                 top, side = tile.sides[0], tile.sides[3]
-                return (i == 0 and j == 0 and
-                        len(all_sides[unique(top)]) == 1 and
-                        len(all_sides[unique(side)]) == 1) or \
-                       (i == 0 and j != 0 and
-                        side == grid[i][j - 1].sides[1]) or \
-                       (i != 0 and top == grid[i - 1][j].sides[2])
+                if i == 0 and j == 0:
+                    top = unique(top)
+                    side = unique(side)
+                    return len(edges[top]) == 1 and len(edges[side]) == 1
+                if i == 0:
+                    return side == grid[i][j - 1].sides[1]
+                return top == grid[i - 1][j].sides[2]
+
             for _ in tile.all_rots():
                 if good():
                     grid[i][j] = tile
