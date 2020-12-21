@@ -49,6 +49,11 @@ def main(inp):
             side = unique(side)
             edges[side] += 1
 
+    corners = [t.index for t in tiles
+               if sum(edges[side] == 1 for side in map(unique, t.sides)) == 2]
+    print(eval('*'.join(corners)))
+
+
     side = round(math.sqrt(len(tiles)))
     grid = [[None] * side for _ in range(side)]
 
