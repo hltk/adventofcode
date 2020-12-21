@@ -1,11 +1,12 @@
 from collections import *
+from copy import deepcopy
 from functools import *
 from itertools import *
 from math import *
 from builtins import pow # has to come after math
+from pprint import pprint
 import operator
 import re
-from pprint import pprint
 
 from more_itertools import *
 from parse import * # search, parse, findall
