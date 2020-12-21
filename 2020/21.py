@@ -1,4 +1,5 @@
 import re
+import networkx as nx
 
 def main(inp):
     allergens = {}
@@ -8,7 +9,6 @@ def main(inp):
             if u not in allergens:
                 allergens[u] = set(w)
             allergens[u] &= set(w)
-    import networkx as nx
     G = nx.Graph()
     for a, b in allergens.items():
         G.add_edges_from((x, a) for x in b)
