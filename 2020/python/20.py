@@ -93,9 +93,7 @@ def main(inp):
     n = len(grid.grid)
     for _ in grid.all_rots():
         r = 0
-        for i, j in itertools.product(range(n), repeat=2):
-            if i + sn > n or j + sm > n:
-                continue
+        for i, j in itertools.product(range(n - sn + 1), range(n - sm + 1)):
             if {grid.grid[i + si][j + sj] for si, sj in points} == {'#'}:
                 r += ''.join(seamonster).count('#')
         if r:
