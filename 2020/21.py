@@ -1,15 +1,13 @@
+import re
+
 def main(inp):
-    inp = inp.strip()
-    inp = inp.split('\n')
     allergens = {}
-    for line in inp:
-        line, info = line.replace(")", "").split(" (contains ")
-        line = line.split()
-        for u in info.split(", "):
-            if u in allergens:
-                allergens[u] &= set(line)
-            else:
-                allergens[u] = set(line)
+    for l in inp.splitlines():
+        w, info = map(lambda x: re.findall('\w+', x), l.split("contains"))
+        for u in info:
+            if u not in allergens:
+                allergens[u] = set(w)
+            allergens[u] &= set(w)
     import networkx as nx
     G = nx.Graph()
     for a, b in allergens.items():
@@ -17,7 +15,6 @@ def main(inp):
     matching = nx.algorithms.bipartite.matching.maximum_matching(G)
     cover = nx.algorithms.bipartite.to_vertex_cover(G, matching)
     print(",".join(sorted(cover, key=matching.__getitem__)))
-
 
 from aocd import data
 main(data)
