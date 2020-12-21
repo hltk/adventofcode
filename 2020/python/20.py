@@ -78,6 +78,7 @@ def main(inp):
     grid = [[''.join(x) for x in zip(*row)] for row in grid]
     grid = [x for row in grid for x in row]
 
+    n = len(grid)
     grid = Tile(grid, None)
 
     seamonster = [
@@ -85,12 +86,11 @@ def main(inp):
         "#    ##    ##    ###",
         " #  #  #  #  #  #   "
     ]
-    sn = len(seamonster)
-    sm = len(seamonster[0])
+
+    sn, sm = len(seamonster), len(seamonster[0])
     points = [(i, j) for i, j in itertools.product(range(sn), range(sm))
               if seamonster[i][j] == '#']
 
-    n = len(grid.grid)
     for _ in grid.all_rots():
         r = 0
         for i, j in itertools.product(range(n - sn + 1), range(n - sm + 1)):
