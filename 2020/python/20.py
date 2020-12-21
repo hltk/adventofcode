@@ -7,7 +7,7 @@ import math
 @dataclasses.dataclass
 class Tile:
     grid: list[str]
-    index: int
+    index: str
     placed: bool = False
 
     @property
@@ -37,18 +37,17 @@ def main(inp):
     tiles = []
     for t in inp.split('\n\n'):
         i = t[5:t.index(':')]
-        i = int(i)
         t = t.split('\n')[1:]
         tiles.append(Tile(t, i))
 
     def unique(side):
         return min(side, side[::-1])
 
-    edges = collections.defaultdict(set)
+    edges = collections.defaultdict(int)
     for t in tiles:
         for side in t.sides:
             side = unique(side)
-            edges[side].add(t.index)
+            edges[side] += 1
 
     side = round(math.sqrt(len(tiles)))
     grid = [[None] * side for _ in range(side)]
@@ -60,7 +59,7 @@ def main(inp):
                 if i == 0 and j == 0:
                     top = unique(top)
                     side = unique(side)
-                    return len(edges[top]) == 1 and len(edges[side]) == 1
+                    return edges[top] == 1 and edges[side] == 1
                 if i == 0:
                     return side == grid[i][j - 1].sides[1]
                 return top == grid[i - 1][j].sides[2]
