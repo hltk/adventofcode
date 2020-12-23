@@ -9,13 +9,10 @@ function main(inp)
     end
     cur = inp[1]
     for i in 1:10^7
-        vals = Int[]
         orig = cur
-        for i in 1:3
-            cur = nxt[cur]
-            push!(vals, cur)
-        end
         cur = nxt[cur]
+        vals = Int[cur, nxt[cur], nxt[nxt[cur]]]
+        cur = nxt[nxt[nxt[cur]]]
         nxt[orig] = cur
         dest = orig
         while dest == orig || dest in vals
