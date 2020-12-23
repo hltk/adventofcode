@@ -15,14 +15,11 @@ def main(inp):
             cur = nxt[cur]
         nxt[orig] = cur
         dest = orig
-        while True:
+        while dest in [*vals, orig]:
             dest = (dest - 1 + mx) % mx
-            if dest not in vals:
-                break
-        nxt[vals[2]] = nxt[dest]
-        nxt[vals[1]] = vals[2]
-        nxt[vals[0]] = vals[1]
-        nxt[dest] = vals[0]
+        vals = [dest, *vals, nxt[dest]]
+        for a, b in zip(vals, vals[1:]):
+            nxt[a] = b
     print((nxt[0] + 1) * (nxt[nxt[0]] + 1))
 
 from aocd import get_data
