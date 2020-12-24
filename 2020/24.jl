@@ -39,10 +39,7 @@ function main(inp)
     println(length(alive))
     for t in 1:100
         cnt(p) = sum(x ∈ alive for x in neigh(p))
-        nxt = Set{Tuple{Int, Int, Int}}()
-        union!(nxt, [p for p ∈ alive if 1 <= cnt(p) <= 2])
-        union!(nxt, [n for p ∈ alive for n ∈ neigh(p) if cnt(n) == 2])
-        alive = nxt
+        alive = union!(Set([p for p ∈ alive if 1 <= cnt(p) <= 2]), [n for p ∈ alive for n ∈ neigh(p) if cnt(n) == 2])
     end
     println(length(alive))
 end
