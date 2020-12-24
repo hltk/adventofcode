@@ -1,6 +1,6 @@
 def main(inp):
     inp = [int(x) - 1 for x in inp]
-    inp += list(range(max(inp) + 1, 10 ** 6))
+    inp.extend([*range(max(inp) + 1, 10 ** 6)])
     nxt = [None for x in inp]
     mx = max(inp) + 1
     for a, b in zip(inp, inp[1:] + inp[:1]):
@@ -15,7 +15,7 @@ def main(inp):
             cur = nxt[cur]
         nxt[orig] = cur
         dest = orig
-        while dest in [*vals, orig]:
+        while dest in {*vals, orig}:
             dest = (dest - 1 + mx) % mx
         vals = [dest, *vals, nxt[dest]]
         for a, b in zip(vals, vals[1:]):
