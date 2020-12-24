@@ -30,7 +30,7 @@ function main(inp)
             end
             p = movs[mov](p...)
         end
-        (p ∈ alive ? setdiff! : union!)(alive, [p])
+        (p ∈ alive ? pop! : push!)(alive, p)
     end
     println(length(alive))
     for t in 1:100
