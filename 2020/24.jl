@@ -7,12 +7,16 @@ movs = Dict(
     "ne" => (x, y, z) -> (x + 1, y, z - 1),
 )
 
-function neigh(p::Tuple{Int, Int, Int})
-    c = Tuple{Int, Int, Int}[]
-    for f in values(movs)
-        push!(c, f(p...))
-    end
-    return c
+function neigh(p)
+    x, y, z = p
+    return [
+        (x + 1, y - 1, z),
+        (x - 1, y + 1, z),
+        (x, y - 1, z + 1),
+        (x - 1, y, z + 1),
+        (x, y + 1, z - 1),
+        (x + 1, y, z - 1),
+    ]
 end
 
 function main(inp)
@@ -34,12 +38,11 @@ function main(inp)
     end
     println(length(alive))
     for t in 1:100
-        function good(p)
-            cnt = length([x for x in neigh(p) if x ∈ alive])
-            return cnt == 2 || (p ∈ alive && cnt == 1)
-        end
-        totest = Iterators.flatten(neigh.(alive))
-        alive = Set([p for p in totest if good(p)])
+        cnt(p) = sum(x ∈ alive for x in neigh(p))
+        nxt = Set{Tuple{Int, Int, Int}}()
+        union!(nxt, [p for p ∈ alive if 1 <= cnt(p) <= 2])
+        union!(nxt, [n for p ∈ alive for n ∈ neigh(p) if cnt(n) == 2])
+        alive = nxt
     end
     println(length(alive))
 end
