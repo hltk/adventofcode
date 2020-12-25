@@ -78,33 +78,33 @@ inp = read(23)
 inp = inp.chomp.chars.map(&:to_i)
 cll = CircularList.new(inp[0])
 
-inp += (inp.max+1..10**6).to_a
+inp += (inp.max + 1..10**6).to_a
 
 cur = cll.ptr
-inp.drop(1).each{|x| cur = cll.insert_after cur, x }
+inp.drop(1).each { |x| cur = cll.insert_after cur, x }
 
 cur = cur.next
 mx = inp.max
 h = {}
 
-cll.each{|x| h[x.value] = x }
+cll.each { |x| h[x.value] = x }
 
-(1..10**7).each{|i|
+(1..10**7).each do |_i|
   dest = cur.value - 1
-  dest = mx if dest == 0
+  dest = mx if dest.zero?
   cur = cur.next
   vals = []
-  3.times{
+  3.times do
     vals << cur.value
     cur = cll.erase(cur)
-  }
+  end
   dest = dest == 1 ? mx : dest - 1 while vals.include? dest
   destptr = h[dest]
-  vals.each{|x|
+  vals.each do |x|
     destptr = cll.insert_after(destptr, x)
     h[destptr.value] = destptr
-  }
-}
+  end
+end
 
 cur = cur.next while cur.value != 1
 p cur.next.value * cur.next.next.value
