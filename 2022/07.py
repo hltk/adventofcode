@@ -1,7 +1,7 @@
-from aocd import lines
+from aocd import data
 from collections import defaultdict
 
-commands = "\n".join(lines).split("$ ")[1:]
+commands = data.split("$ ")[1:]
 path = []
 sizes = defaultdict(int)
 
