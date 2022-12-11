@@ -3,14 +3,24 @@ from aocd import lines
 from operator import add, sub, methodcaller
 from more_itertools import flatten
 
-def norm(x): return x // abs(x) if x else 0
-def add_vec(a, b): return tuple(map(add, a, b))
-def sub_vec(a, b): return tuple(map(sub, a, b))
+
+def norm(x):
+    return x // abs(x) if x else 0
+
+
+def add_vec(a, b):
+    return tuple(map(add, a, b))
+
+
+def sub_vec(a, b):
+    return tuple(map(sub, a, b))
+
 
 mov = dict(zip("UDLR", [(1, 0), (-1, 0), (0, -1), (0, 1)]))
 
 make_moves = lambda line: [line.split()[0]] * int(line.split()[1])
 moves = list(flatten(map(make_moves, lines)))
+
 
 def simulate(*tails):
     nodes = [[(0, 0) for _ in range(max(tails))]]
@@ -25,5 +35,6 @@ def simulate(*tails):
         nodes.append(row)
 
     return [*map(lambda i: len({*[*zip(*nodes)][i - 1]}), tails)]
+
 
 print(*simulate(2, 10))

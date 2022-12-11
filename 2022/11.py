@@ -1,6 +1,7 @@
 from aocd import data
 import re, numpy as np
 
+
 def read_monkey(s):
     d = re.match(
         r"""Monkey (?P<id>\d+):
@@ -20,19 +21,15 @@ def read_monkey(s):
     d["inspected"] = 0
     return d
 
-monkeys = [
-    read_monkey(m)
-    for m in data.split("\n\n")
-]
+
+monkeys = [read_monkey(m) for m in data.split("\n\n")]
 
 t = [m["test"] for m in monkeys]
 
 for m in monkeys:
     m["items"] = [[v % d for d in t] for v in m["items"]]
 
-monkeys = {
-    m["id"]: m for m in monkeys
-}
+monkeys = {m["id"]: m for m in monkeys}
 
 all_items = []
 
@@ -41,7 +38,7 @@ for m in monkeys.values():
     all_items.extend(m["items"])
     m["items"] = list(range(old_size, len(all_items)))
 
-for _ in range(10 ** 4):
+for _ in range(10**4):
     for i in sorted(monkeys.keys()):
         m = monkeys[i]
         it = m["items"].copy()
@@ -50,7 +47,9 @@ for _ in range(10 ** 4):
             m["inspected"] += 1
             v = all_items[item_id]
             all_items[item_id] = [m["op"](x) % d for x, d in zip(v, t)]
-            divisibility = any(x == 0 and m["test"] == d for x, d in zip(all_items[item_id], t))
+            divisibility = any(
+                x == 0 and m["test"] == d for x, d in zip(all_items[item_id], t)
+            )
             monkeys[m[str(divisibility)]]["items"].append(item_id)
 
 times = [m["inspected"] for m in monkeys.values()]

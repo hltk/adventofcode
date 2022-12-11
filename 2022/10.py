@@ -9,5 +9,7 @@ sums = [0] + list(accumulate(instructions))
 
 print(sum(sums[i] * i for i in range(20, 221, 40)))
 
-draw_row = lambda v: "".join("#" if abs(i - j) <= 1 else "." for i, j in zip(count(0), v))
+draw_row = lambda v: "".join(
+    "#" if abs(i - j) <= 1 else "." for i, j in zip(count(0), v)
+)
 print("\n".join(draw_row(vals) for vals in chunked(sums[1:-1], 40)))
