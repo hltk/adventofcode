@@ -18,8 +18,7 @@ for i, j in product(range(n), range(m)):
         vis.add((i, j))
         dist[i, j] = 0
 
-while q:
-    i, j = q.pop(0)
+for i, j in iter(q):
     for ni, nj in neighbours4(i, j):
         if ni in range(n) and nj in range(m):
             if (ni, nj) not in vis and ord(grid[i][j]) - ord(grid[ni][nj]) <= 1:
