@@ -5,7 +5,7 @@ from utils import *
 grid = list(map(list, data.split("\n")))
 n, m = len(grid), len(grid[0])
 indices = {(i, j) for i, j in product(range(n), range(m))}
-grid = dict(zip(indices, starmap(lambda i, j: grid[i][j], indices)))
+grid = {(i, j): grid[i][j] for i, j in indices}
 
 e ,= (p for p in indices if grid[p] == 'E')
 s ,= (p for p in indices if grid[p] == 'S')
