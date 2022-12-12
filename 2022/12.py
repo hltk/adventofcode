@@ -1,27 +1,22 @@
-from aocd import data
-from itertools import product, starmap
+from aocd import lines
 from utils import *
 
-grid = list(map(list, data.split("\n")))
-n, m = len(grid), len(grid[0])
-indices = {(i, j) for i, j in product(range(n), range(m))}
-grid = {(i, j): grid[i][j] for i, j in indices}
+grid = {(i, j): v for i, row in enumerate(lines) for j, v in enumerate(row)}
 
-e ,= (p for p in indices if grid[p] == 'E')
-s ,= (p for p in indices if grid[p] == 'S')
+goal ,= (p for p in grid if grid[p] == 'E')
+start ,= (p for p in grid if grid[p] == 'S')
 
-grid[e] = 'z'
-grid[s] = 'a'
+grid[start] = 'a'
+grid[goal] = 'z'
 
-q, vis, dist = [e], {e}, {e: 0}
+queue, dist = [goal], {goal: 0}
 
-for cur in iter(q):
+for cur in iter(queue):
     for nxt in neighbours4(*cur):
-        if nxt in indices - vis:
+        if nxt in set(grid) - set(dist):
             if ord(grid[cur]) - ord(grid[nxt]) <= 1:
-                vis.add(nxt)
                 dist[nxt] = dist[cur] + 1
-                q.append(nxt)
+                queue.append(nxt)
 
-print(dist[s])
+print(dist[start])
 print(min(v for p, v in dist.items() if grid[p] == 'a'))
