@@ -3,24 +3,20 @@ from more_itertools import split_at
 
 
 def compare(a, b):
-    match (a, b):
-        case int(x), int(y):
-            return x < y
-        case [], []:
-            return False
-        case [], list(y):
-            return True
-        case list(x), []:
-            return False
-        case int(x), list(y):
-            return compare([x], y)
-        case list(x), int(y):
-            return compare(x, [y])
+    match a, b:
+        case int(), int():
+            return a < b
+        case int(), list():
+            return compare([a], b)
+        case list(), int():
+            return compare(a, [b])
         case [x, *xs], [y, *ys]:
             if x != y:
                 return compare(x, y)
             else:
                 return compare(xs, ys)
+        case _:
+            return a == [] and b > []
 
 
 items = [eval(line) if line else None for line in lines]
