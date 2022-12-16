@@ -10,19 +10,19 @@ import math
 
 class V:
     def __init__(self, *x):
-        self.v = tuple(x)
+        self.v = tuple(x[0]) if len(x) == 1 else tuple(x)
     def __sub__(self, v):
-        return V(*map(operator.sub, self, v))
+        return V(map(operator.sub, self, v))
     def __add__(self, v):
-        return V(*map(operator.add, self, v))
+        return V(map(operator.add, self, v))
     def __mul__(self, v):
         if isinstance(v, V):
             return V(*map(operator.mul, self, v))
-        return V(*map(lambda x: x * v, self))
+        return V(map(lambda x: x * v, self))
     def __truediv__(self, v):
         return self.checkints(self.__mul__(1 / v))
     def __floordiv__(self, v):
-        return V(*map(lambda x: x // v, self))
+        return V(map(lambda x: x // v, self))
     def dot(self, v):
         return sum(self * v)
     @property
@@ -44,27 +44,47 @@ class V:
     def dist(self):
         return self.len
     @property
+    def manhattan(self):
+        return sum(map(abs, self))
+    @property
     def norm(self):
         return self.checkints(self / self.len)
     def __repr__(self):
-        return f"V({', '.join(str(x) for x in self.v)})"
+        return f"V{self.v.__repr__()}"
     def __str__(self):
         return self.__repr__()
     def __iter__(self):
         yield from self.v.__iter__()
     def __eq__(self, oth):
-        return self.v == oth.v
+        if isinstance(oth, V):
+            return self.v.__eq__(oth.v)
+        return all(x == oth for x in self)
+    def __lt__(self, oth):
+        if isinstance(oth, V):
+            return self.v.__lt__(oth.v)
+        return all(x < oth for x in self)
+    def __ge__(self, oth):
+        if isinstance(oth, V):
+            return self.v.__ge__(oth.v)
+        return all(x >= oth for x in self)
+    def __le__(self, oth):
+        if isinstance(oth, V):
+            return self.v.__le__(oth.v)
+        return all(x <= oth for x in self)
     def __hash__(self):
         return self.v.__hash__()
     @staticmethod
     def checkints(v):
-        return V(*map(int, v)) if all(math.isclose(round(x), x) for x in v) else v
+        return V(map(int, v)) if all(math.isclose(round(x), x) for x in v) else v
     @staticmethod
     def interpolate(p1, p2, num=None):
         if not num:
             num = (p2 - p1).dist + 1
         for i in range(num):
             yield p1 + V.checkints((p2 - p1) / (num - 1)) * i
+    def force_inside(self, *conds):
+        return V(min(max(v, min_v), max_v) for v, min_v, max_v in zip(self, conds[::2], conds[1::2]))
+
 
 
 def dotproduct(vec1, vec2):
@@ -146,4 +166,15 @@ def neighbours9(i, j):
     yield i + 1, j - 1
 
 
+dir4 = [V(-1, 0), V(1, 0), V(0, -1), V(0, 1)]
+
 valid_coords = lambda i, j: i in range(n) and j in range(m)
+
+import re
+
+def ints(line, non_neg_only=False):
+    if non_neg_only:
+        return [int(x) for x in re.findall(r"\d+", line)]
+    if re.match(r"\d-\d", line):
+        print("ints: DANGEROUS match")
+    return [int(x) for x in re.findall(r"-?\d+", line)]
