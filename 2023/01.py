@@ -11,8 +11,7 @@ for part in [1, 2]:
     ans = 0
 
     for l in data.split("\n"):
-        i = next(i for i in range(len(l)) if digit(l[i:]))
-        j = next(j for j in reversed(range(len(l))) if digit(l[j:]))
-        ans += int(digit(l[i:]) + digit(l[j:]))
+        c = [x for i in range(len(l)) if (x := digit(l[i:]))]
+        ans += int(c[0] + c[-1])
 
     print(ans)
