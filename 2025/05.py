@@ -2,7 +2,7 @@ from aocd import data
 
 f, d = data.split("\n\n")
 
-f = [*sorted((tuple(map(int, k.split("-"))) for k in f.split("\n")), key=lambda k: k[0])]
+f = [*sorted((tuple(map(int, k.split("-"))) for k in f.split("\n")))]
 
 
 print(sum(any(a <= int(x) <= b for a, b in f) for x in d.split("\n")))
